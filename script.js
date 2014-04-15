@@ -36,26 +36,43 @@ function dataLoaded(UNEMPDATA) {
 	myChart.draw(gDataTable, chartOptions);
 }
 
-var stem = "https://www.googleapis.com/fusiontables/v1/query?sql=SELECT+*+FROM+1I1IanRhd9RKxe1emSFkg2LgRFIa2GTqcKSntGhBN+WHERE+DATE%3E%27";
-var key = "&key=AIzaSyBJWD4UulDQQMtDdtacaCD03MInkDsb61g";
+var myTableURL = "https://www.googleapis.com/fusiontables/v1/query?sql=SELECT+*+FROM+1I1IanRhd9RKxe1emSFkg2LgRFIa2GTqcKSntGhBN+WHERE+DATE>";
+var myKey = "&key=AIzaSyBJWD4UulDQQMtDdtacaCD03MInkDsb61g";
 
 
-function googleLoaded() {
+function googleLoaded(e) {
 	
 	console.log("googleLoaded");
 	
 	//Instead of loading data from a static json file,
 	//I'm going to load it from a Google Fusion Table
 
-	$.get(stem+"1979-01-01%27+"+key, dataLoaded, "json");
+	$.get(myTableURL+"'1979-01-01'+"+myKey, dataLoaded, "json");
 
-
+	setNav();
 }
 
 function setNav() {
-	$(".btn-success").on("click", function(event) {
-		console.log(event.target.id);	
+	
+	$(".btn-success").on("click", function(e) {
+
+		//$("#year_1980").click();
+		
+		
+		var myID = e.target.id; //e.g. "year 2000"
+	
+		var myNameArray = myID.split("_"); //splits into an array, "2000" will be the second item.
+		
+		var myYear = myNameArray[1]; //grab the year
+			
+		console.log(myYear);
+		
+		$.get(myTableURL+"'"+myYear+"-01-01'"+myKey, dataLoaded, "json");
+		//$.get(stem+"'1979-01-01'+"+key, dataLoaded, "json");
+		
+		
 	});
+
 }
 
 
@@ -71,8 +88,8 @@ function pageLoad() {
 		callback : "googleLoaded"
 	}); 
 	
+	
 
-	//
 
 	
 
