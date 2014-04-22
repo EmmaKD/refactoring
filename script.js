@@ -17,6 +17,8 @@ function dataLoaded(UNEMPDATA) {
 	//only works because it is a google.visualization object
 
 	gDataTable.addColumn('number', UNEMPDATA.columns[1]);
+	
+	gDataTable.addColumn({type:'string', role:'tooltip', 'p': {'html'; true}};
 
 	gDataTable.addRows(UNEMPDATA.rows);
 	//only works because this is a google.visualization object
@@ -24,9 +26,12 @@ function dataLoaded(UNEMPDATA) {
 	//create options object to actually customize the look if the chart
 
 	var chartOptions = {
-		title : 'Unemployment since 1980'
+		width:600,
+		height:400,
+		tooltip: {isHtml: true}
+		
 	};
-
+	title : 'Unemployment since 1980'
 	//tell it to create a line chart, and give it the
 	var myChart = new google.visualization.LineChart(document.getElementById("MyChart"));
 
@@ -40,20 +45,32 @@ var myKey = "&key=AIzaSyBJWD4UulDQQMtDdtacaCD03MInkDsb61g";
 function googleLoaded(e) {
 
 	console.log("googleLoaded");
+	
+	var myURL = History.getState().cleanUrl;
+	
+	var myYear = myURL.split("?year=")[1];
+
+	console.log(myYear);
 
 	//Instead of loading data from a static json file,
 	//I'm going to load it from a Google Fusion Table
 
-	$.get(myTableURL + "'1979-01-01'+" + myKey, dataLoaded, "json");
+	$.get(myTableURL + "'"+myYear+"-01-01'+" + myKey, dataLoaded, "json");
 
 	setNav();
 }
 
 function setNav() {
 
-	$(".btn-success").on("click", function(e) {
+	$(".btn-success").on("click", showNewData);
 
-		//$("#year_1980").click();
+}
+
+
+function showNewData(e) {
+	//$("#year_1980").click();
+
+		console.log("click");
 
 		var myID = e.target.id;
 		//e.g. "year 2000"
@@ -64,7 +81,6 @@ function setNav() {
 		var myYear = myNameArray[1];
 		//grab the year
 
-		console.log(myYear);
 
 		$.get(myTableURL + "'" + myYear + "-01-01'" + myKey, dataLoaded, "json");
 		//$.get(stem+"'1979-01-01'+"+key, dataLoaded, "json");
@@ -72,10 +88,13 @@ function setNav() {
 		History.pushState({
 			year : myYear
 		}, "Unemployment from -" + myYear, "?year=" + myYear);
-
-	});
-
+		
+		
+		
 }
+
+
+
 
 console.log("google loaded");
 
