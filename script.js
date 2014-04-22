@@ -18,7 +18,7 @@ function dataLoaded(UNEMPDATA) {
 
 	gDataTable.addColumn('number', UNEMPDATA.columns[1]);
 	
-	gDataTable.addColumn({type:'string', role:'tooltip', 'p': {'html'; true}};
+	gDataTable.addColumn({type:'string', role:'tooltip', 'p': {'html': true}});
 
 	gDataTable.addRows(UNEMPDATA.rows);
 	//only works because this is a google.visualization object
@@ -29,6 +29,7 @@ function dataLoaded(UNEMPDATA) {
 		width:600,
 		height:400,
 		tooltip: {isHtml: true}
+		
 		
 	};
 	title : 'Unemployment since 1980'
